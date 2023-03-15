@@ -2,22 +2,23 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
-import Navbar from "./components/Navbar";
 import Vans from "./pages/Vans";
+import VanDetail from "./pages/VanDetail";
+import Layout from "./components/Layout";
 
 import "./server.js";
-import VanDetail from "./pages/VanDetail";
 
 function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/vans" element={<Vans />} />
-          <Route path="/van/:id" element={<VanDetail />} />
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/vans" element={<Vans />} />
+            <Route path="/van/:id" element={<VanDetail />} />
+          </Route>
         </Routes>
       </Router>
     </div>
