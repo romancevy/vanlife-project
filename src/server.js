@@ -15,6 +15,7 @@ createServer({
       imageUrl:
         "https://res.cloudinary.com/dxiwysn1u/image/upload/v1678914006/kznc200k5geu8si9ebgx.png",
       type: "simple",
+      hostId: "123",
     });
     server.create("van", {
       id: "2",
@@ -35,6 +36,7 @@ createServer({
       imageUrl:
         "https://res.cloudinary.com/dxiwysn1u/image/upload/v1678914007/zpelflcoqn1sogtzlrqa.png",
       type: "luxury",
+      hostId: "123",
     });
     server.create("van", {
       id: "4",
@@ -65,6 +67,7 @@ createServer({
       imageUrl:
         "https://res.cloudinary.com/dxiwysn1u/image/upload/v1678914008/flhwd5ebknf0npenuibf.png",
       type: "rugged",
+      hostId: "123",
     });
   },
 
@@ -79,6 +82,17 @@ createServer({
     this.get("/vans/:id", (schema, request) => {
       const id = request.params.id;
       return schema.vans.find(id);
+    });
+
+    this.get("/host/vans", (schema, request) => {
+      // Hard-code the hostId for now
+      return schema.vans.where({ hostId: "123" });
+    });
+
+    this.get("/host/vans/:id", (schema, request) => {
+      // Hard-code the hostId for now
+      const id = request.params.id;
+      return schema.vans.findBy({ id, hostId: "123" });
     });
   },
 });
