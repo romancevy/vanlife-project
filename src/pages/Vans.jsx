@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const Vans = () => {
-  const [data, setData] = useState([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [vans, setVans] = useState([]);
 
+  const typeFilter = searchParams.get("type");
+  console.log(typeFilter);
+  // FETCH ALL VANS
   useEffect(() => {
     try {
       const fetchData = async () => {
         const response = await fetch("api/vans");
         const result = await response.json();
-        setData(result.vans);
+        setVans(result.vans);
         // console.log(result.vans);
       };
       fetchData();
@@ -18,7 +22,12 @@ const Vans = () => {
     }
   }, []);
 
-  const vanElements = data.map((van) => (
+  // FILTER
+  const filteredVans = typeFilter
+    ? vans.filter((van) => van.type === typeFilter)
+    : vans;
+
+  const vanElements = filteredVans.map((van) => (
     <div key={van.id} className="van-tile">
       <Link to={`/van/${van.id}`}>
         <img src={van.imageUrl} />

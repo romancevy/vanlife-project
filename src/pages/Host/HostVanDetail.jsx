@@ -5,9 +5,16 @@ const HostVanDetail = () => {
   const [currentVan, setCurrentVan] = useState(null);
 
   useEffect(() => {
-    fetch(`/api/host/vans/${id}`)
-      .then((res) => res.json())
-      .then((data) => setCurrentVan(data.vans));
+    try {
+      const fetchData = async (id) => {
+        const response = await fetch(`/api/host/vans/${id}`);
+        const result = await response.json();
+        setCurrentVan(result.vans);
+      };
+      fetchData(id);
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   if (!currentVan) {
