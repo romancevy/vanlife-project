@@ -1,8 +1,16 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, Outlet, useParams } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useLocation,
+  useParams,
+} from "react-router-dom";
+
 const HostVanDetail = () => {
   const { id } = useParams();
   const [currentVan, setCurrentVan] = useState(null);
+  const location = useLocation();
 
   useEffect(() => {
     try {
@@ -28,7 +36,8 @@ const HostVanDetail = () => {
   };
   return (
     <section>
-      <Link to=".." relative="path" className="back-button">
+      {/* relativ zur aktuellen URL eine Stufe im Pfad zurückgehen */}
+      <Link to={`..`} relative="path" className="back-button">
         &larr; <span>Back to all vans</span>
       </Link>
 
