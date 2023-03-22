@@ -7,8 +7,8 @@ import {
   useParams,
 } from "react-router-dom";
 
-export async function loader() {
-  return defer({ hostVans: getHostVans() });
+export async function loader({ params }) {
+  return defer({ hostVans: getHostVans(params.id) });
 }
 
 const HostVanDetail = () => {

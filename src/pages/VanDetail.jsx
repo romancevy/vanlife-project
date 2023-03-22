@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense } from "react";
+import { Suspense } from "react";
 import {
   useLocation,
   Link,
@@ -9,33 +9,13 @@ import {
 import { getVans } from "../api";
 
 export function loader({ params }) {
-  // console.log(params);
   return defer({ van: getVans(params.id) });
 }
 
 const VanDetail = () => {
   const dataPromise = useLoaderData();
-  // console.log(dataPromise);
-
-  // const { id } = useParams();
-  // const [van, setVan] = useState(null);
   const location = useLocation();
 
-  // FETCH
-  // useEffect(() => {
-  //   try {
-  //     const fetchData = async (id) => {
-  //       const response = await fetch(`/api/vans/${id}`);
-  //       const result = await response.json();
-  //       setVan(result.vans);
-  //     };
-  //     fetchData(id);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }, [id]);
-
-  // console.log(location);
   // Zugriff auf die Suchparameter aus der "Vans"-Page
   const search = location.state?.search || "";
   // Zugriff auf den "type" aus der "Vans"-Page
