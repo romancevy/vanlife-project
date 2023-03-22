@@ -1,38 +1,25 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import {
   Link,
   NavLink,
   Outlet,
   useLocation,
   useParams,
+  useLoaderData,
+  defer,
+  Await,
 } from "react-router-dom";
+import { getHostVans } from "../../api";
 
 export async function loader({ params }) {
-  return defer({ hostVans: getHostVans(params.id) });
+  return defer({ hostVan: getHostVans(params.id) });
 }
 
 const HostVanDetail = () => {
-  const { id } = useParams();
   const [currentVan, setCurrentVan] = useState(null);
   const location = useLocation();
 
-  useEffect(() => {
-    try {
-      const fetchData = async (id) => {
-        const response = await fetch(`/api/host/vans/${id}`);
-        const result = await response.json();
-        setCurrentVan(result.vans);
-      };
-      fetchData(id);
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
-
-  if (!currentVan) {
-    return <h1>Loading...</h1>;
-  }
-
+  const dataPromise = useLoaderData();
   const activeStyle = {
     fontWeight: "bold",
     textDecoration: "underline",
@@ -44,43 +31,50 @@ const HostVanDetail = () => {
       <Link to={`..`} relative="path" className="back-button">
         &larr; <span>Back to all vans</span>
       </Link>
-
-      <div className="host-van-detail-layout-container">
-        <div className="host-van-detail">
-          <img src={currentVan.imageUrl} />
-          <div className="host-van-detail-info-text">
-            <i className={`van-type van-type-${currentVan.type}`}>
-              {currentVan.type}
-            </i>
-            <h3>{currentVan.name}</h3>
-            <h4>${currentVan.price}/day</h4>
-          </div>
-        </div>
-        {/*Your changes will go here*/}
-        <nav className="host-van-detail-nav">
-          <NavLink
-            to="."
-            end
-            style={({ isActive }) => (isActive ? activeStyle : null)}
-          >
-            Details
-          </NavLink>
-          <NavLink
-            to="pricing"
-            style={({ isActive }) => (isActive ? activeStyle : null)}
-          >
-            Pricing
-          </NavLink>
-          <NavLink
-            to="photos"
-            style={({ isActive }) => (isActive ? activeStyle : null)}
-          >
-            Photos
-          </NavLink>
-        </nav>
-        {/* https://reactrouter.com/en/main/hooks/use-outlet-context */}
-        {<Outlet context={currentVan} />}
-      </div>
+      <Suspense fallback={<h2>Loading...</h2>}>
+        <Await resolve={dataPromise.hostVan}>
+          {(currentVan) => {
+            // console.log(currentVan);
+            return (
+              <div className="host-van-detail-layout-container">
+                <div className="host-van-detail">
+                  <img src={currentVan.imageUrl} />
+                  <div className="host-van-detail-info-text">
+                    <i className={`van-type van-type-${currentVan.type}`}>
+                      {currentVan.type}
+                    </i>
+                    <h3>{currentVan.name}</h3>
+                    <h4>${currentVan.price}/day</h4>
+                  </div>
+                </div>
+                <nav className="host-van-detail-nav">
+                  <NavLink
+                    to="."
+                    end
+                    style={({ isActive }) => (isActive ? activeStyle : null)}
+                  >
+                    Details
+                  </NavLink>
+                  <NavLink
+                    to="pricing"
+                    style={({ isActive }) => (isActive ? activeStyle : null)}
+                  >
+                    Pricing
+                  </NavLink>
+                  <NavLink
+                    to="photos"
+                    style={({ isActive }) => (isActive ? activeStyle : null)}
+                  >
+                    Photos
+                  </NavLink>
+                </nav>
+                {/* https://reactrouter.com/en/main/hooks/use-outlet-context */}
+                {<Outlet context={currentVan} />}
+              </div>
+            );
+          }}
+        </Await>
+      </Suspense>
     </section>
   );
 };
