@@ -6,6 +6,10 @@ const Navbar = () => {
     textDecoration: "underline",
     color: "#161616",
   };
+
+  function fakeLogOut() {
+    localStorage.removeItem("loggedin");
+  }
   return (
     <header>
       <NavLink className="site-logo" to="/">
@@ -30,6 +34,7 @@ const Navbar = () => {
         >
           Vans
         </NavLink>
+        <button onClick={fakeLogOut}>X</button>
       </nav>
     </header>
   );

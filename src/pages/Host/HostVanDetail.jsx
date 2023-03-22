@@ -7,6 +7,10 @@ import {
   useParams,
 } from "react-router-dom";
 
+export async function loader() {
+  return defer({ hostVans: getHostVans() });
+}
+
 const HostVanDetail = () => {
   const { id } = useParams();
   const [currentVan, setCurrentVan] = useState(null);
