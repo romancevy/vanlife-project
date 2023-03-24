@@ -123,6 +123,7 @@ footer {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  max-width: 80%;
   min-height: 350px;
   color: white;
   padding: 45px 23px;
@@ -160,7 +161,7 @@ footer {
 
 /*** ABOUT PAGE ***/
 .about-hero-image {
-  max-width: 100%;
+  max-width: 60%;
 }
 
 .about-page-content {
