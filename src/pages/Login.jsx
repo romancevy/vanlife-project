@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   useNavigate,
   useLocation,
@@ -13,10 +14,10 @@ export async function action({ request }) {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
-  console.log(email, password);
   try {
     const data = await loginUser({ email, password });
-    localStorage.setItem("loggedin", true);
+    localStorage.setItem("token", data?.token);
+    console.log(data.token);
     return data;
   } catch (error) {
     return {
@@ -32,11 +33,12 @@ export default function Login() {
   const data = useActionData();
 
   const from = location.state?.from || "/host";
-  console.log(data);
 
-  if (data?.token) {
-    navigate(from, { replace: true });
-  }
+  useEffect(() => {
+    if (data?.token) {
+      navigate(from, { replace: true });
+    }
+  }, [data]);
 
   return (
     <div className="login-container">

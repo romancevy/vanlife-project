@@ -1,10 +1,9 @@
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(() => resolve(), ms));
-}
-
 export async function getVans(id) {
-  const url = id ? `/api/vans/${id}` : "/api/vans";
+  const url = id
+    ? `http://localhost:9898/api/vans/${id}`
+    : "http://localhost:9898/api/vans";
   const res = await fetch(url);
+
   if (!res.ok) {
     throw {
       message: "Failed to fetch vans",
@@ -13,11 +12,13 @@ export async function getVans(id) {
     };
   }
   const data = await res.json();
-  return data.vans;
+  return data;
 }
 
 export async function getHostVans(id) {
-  const url = id ? `/api/host/vans/${id}` : "/api/host/vans";
+  const url = id
+    ? `http://localhost:9898/api/host/vans/${id}`
+    : "http://localhost:9898/api/host/vans";
   const res = await fetch(url);
   if (!res.ok) {
     throw {
@@ -27,23 +28,23 @@ export async function getHostVans(id) {
     };
   }
   const data = await res.json();
-  return data.vans;
+  return data;
 }
 
 export async function loginUser(creds) {
-  const res = await fetch("/api/login", {
-    method: "post",
+  const res = await fetch("http://localhost:9898/api/v1/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(creds),
   });
   const data = await res.json();
 
   if (!res.ok) {
     throw {
-      message: data.message,
-      statusText: res.statusText,
-      status: res.status,
+      message: data.msg,
     };
   }
-
   return data;
 }

@@ -1,0 +1,9 @@
+.host-van-info h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-block: 10px;
+}
+
+.host-van-info p {
+  margin-block: 10px;
+}

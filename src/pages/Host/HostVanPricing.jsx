@@ -1,4 +1,5 @@
 import { useOutletContext } from "react-router-dom";
+import "./style/HostVanPricing.css";
 
 const HostVanPricing = () => {
   const { price } = useOutletContext();

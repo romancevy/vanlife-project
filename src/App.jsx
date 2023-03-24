@@ -4,15 +4,13 @@ import {
   RouterProvider,
   createBrowserRouter,
   createRoutesFromElements,
-  useRouteError,
-  Link,
 } from "react-router-dom";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Vans, { loader as vansLoader } from "./pages/Vans";
 import VanDetail, { loader as vanDetailLoader } from "./pages/VanDetail";
 import Layout from "./components/Layout";
-import Dashboard from "./pages/Host/Dashboard";
+import Dashboard, { loader as dashboardLoader } from "./pages/Host/Dashboard";
 import Income from "./pages/Host/Income";
 import Reviews from "./pages/Host/Reviews";
 import HostLayout from "./components/HostLayout";
@@ -28,8 +26,6 @@ import Error from "./components/Error";
 import Auth from "./components/Auth";
 import Login, { action as loginAction } from "./pages/Login";
 
-import "./server.js";
-
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Layout />}>
@@ -43,12 +39,22 @@ const router = createBrowserRouter(
         errorElement={<Error />}
         loader={vansLoader}
       />
-      <Route path="vans/:id" element={<VanDetail />} loader={vanDetailLoader} />
+      <Route
+        path="vans/:id"
+        element={<VanDetail />}
+        loader={vanDetailLoader}
+        errorElement={<Error />}
+      />
 
       <Route element={<Auth />}>
         <Route path="host" element={<HostLayout />}>
           {/* Standard-Routes für den Host-Bereich */}
-          <Route index element={<Dashboard />} />
+          <Route
+            index
+            element={<Dashboard />}
+            errorElement={<Error />}
+            loader={dashboardLoader}
+          />
           <Route path="income" element={<Income />} />
           <Route path="reviews" element={<Reviews />} />
           <Route
@@ -60,6 +66,7 @@ const router = createBrowserRouter(
           <Route
             path="vans/:id"
             element={<HostVanDetail />}
+            errorElement={<Error />}
             loader={hostVanDetailLoader}
           >
             <Route index element={<HostVanInfo />} />

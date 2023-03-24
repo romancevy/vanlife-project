@@ -13,8 +13,8 @@ export function loader({ params }) {
 }
 
 const VanDetail = () => {
-  const dataPromise = useLoaderData();
   const location = useLocation();
+  const dataPromise = useLoaderData();
 
   // Zugriff auf die Suchparameter aus der "Vans"-Page
   const search = location.state?.search || "";

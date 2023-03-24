@@ -1,30 +1,28 @@
-import { Suspense, useEffect, useState } from "react";
+import "./style/HostVanDetail.css";
+import { Suspense } from "react";
 import {
   Link,
   NavLink,
   Outlet,
-  useLocation,
-  useParams,
   useLoaderData,
   defer,
   Await,
 } from "react-router-dom";
-import { getHostVans } from "../../api";
+import { getVans } from "../../api";
 
 export async function loader({ params }) {
-  return defer({ hostVan: getHostVans(params.id) });
+  return defer({ hostVan: getVans(params.id) });
 }
 
 const HostVanDetail = () => {
-  const [currentVan, setCurrentVan] = useState(null);
-  const location = useLocation();
-
   const dataPromise = useLoaderData();
+
   const activeStyle = {
     fontWeight: "bold",
     textDecoration: "underline",
     color: "#161616",
   };
+
   return (
     <section>
       {/* relativ zur aktuellen URL eine Stufe im Pfad zurückgehen */}
@@ -34,7 +32,6 @@ const HostVanDetail = () => {
       <Suspense fallback={<h2>Loading...</h2>}>
         <Await resolve={dataPromise.hostVan}>
           {(currentVan) => {
-            // console.log(currentVan);
             return (
               <div className="host-van-detail-layout-container">
                 <div className="host-van-detail">
