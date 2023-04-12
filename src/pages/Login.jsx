@@ -7,6 +7,7 @@ import {
   useNavigation,
 } from "react-router-dom";
 import { loginUser } from "../api";
+import "./Login.css";
 
 export async function action({ request }) {
   // native JS FormData Object
@@ -48,8 +49,18 @@ export default function Login() {
       {data?.error && <h3 className="login-error">{data.error}</h3>}
       <h1>Sign in to your account</h1>
       <Form action="/login" method="post" className="login-form">
-        <input name="email" type="email" placeholder="Email address" />
-        <input name="password" type="password" placeholder="Password" />
+        <input
+          name="email"
+          type="email"
+          placeholder="Email address"
+          value={"m@x.com"}
+        />
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          value={"pw123"}
+        />
         <button disabled={navigation?.state === "submitting"}>
           {navigation?.state === "submitting" ? "Logging in..." : "Log in"}
         </button>
